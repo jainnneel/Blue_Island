@@ -1301,65 +1301,68 @@
 
         // Helper function to get airline information from sector keys
         function getAirlineInfo(flightName, sectorKeys) {
-            let airlineInfo = flightName + " (";
+            // New API flight ID format: "AI-2546-AMD-DEL-1775323800"
+            //   split('-') → ["AI", "2546", "AMD", "DEL", "1775323800"]
+            //                   [0]    [1]    [2]    [3]      [4]
+            //   airline = parts[0], flightNumber = parts[1]
 
-            if (sectorKeys && sectorKeys.length > 0) {
-                const segments = sectorKeys[0].split('|');
-                segments.forEach((segment, index) => {
-                    // Extract the airline-flightNumber part from the segment
-                    const parts = segment.split('_');
-                    if (parts.length >= 4) {
-                        const airlineFlightPart = parts[3]; // This contains something like "AI-532"
-                        const [airline, flightNumber] = airlineFlightPart.split('-');
-
-                        // Add segment information
-                        airlineInfo += `${airline}-${flightNumber}`;
-
-                        // Add separator if not the last segment
-                        if (index < segments.length - 1) {
-                            airlineInfo += " → ";
-                        }
-                    }
-                });
-            } else {
-                // Fallback to flightName if sectorKey is not available
-                airlineInfo = flightName;
+            if (!sectorKeys || sectorKeys.length === 0) {
+                return flightName; // graceful fallback
             }
 
-            airlineInfo += ")";
-            return airlineInfo;
+            const segments = sectorKeys[0].split('|');
+            const flightCodes = segments.map(segment => {
+                const parts = segment.split('-');
+                // Need at least airline code + flight number (indices 0 and 1)
+                if (parts.length >= 2) {
+                    return `${parts[0]}-${parts[1]}`; // e.g. "AI-2546"
+                }
+                return null;
+            }).filter(Boolean);
+
+            if (flightCodes.length === 0) {
+                return flightName; // graceful fallback
+            }
+
+            // e.g. "Air India (AI-2546 → AI-2995)"
+            return `${flightName} (${flightCodes.join(' → ')})`;
         }
 
         // Helper function to get route path information
         function getRoutePath(sectorKeys) {
+            // New API flight ID format: "AI-2546-AMD-DEL-1775323800"
+            //   split('-') → ["AI", "2546", "AMD", "DEL", "1775323800"]
+            //                              origin[2]  dest[3]
+            // For a journey AMD→DEL→BOM the sectorKey is:
+            //   "AI-2546-AMD-DEL-...|AI-2995-DEL-BOM-..."
+            // All unique airports in order:
+            //   segment[0].parts[2] (origin) + each segment.parts[3] (each destination)
+
             if (!sectorKeys || sectorKeys.length === 0) return "";
 
-            // Parse the sector key
             const segments = sectorKeys[0].split('|');
 
-            if (segments.length === 1) {
-                // Direct flight
-                const [from, to] = segments[0].split('_').slice(0, 2);
-                return `
-            <span class="airport-code">${from}</span>
-            <span class="route-arrow">→</span>
-            <span class="airport-code">${to}</span>
-        `;
-            } else {
-                // Connecting flight
-                const [segment1, segment2] = segments;
-                const from = segment1.split('_')[0];
-                const transit = segment1.split('_')[1];
-                const to = segment2.split('_')[1];
+            // Build ordered list of IATA codes: origin of first segment + destination of every segment
+            const airportCodes = [];
+            segments.forEach((segment, i) => {
+                const parts = segment.split('-');
+                // parts[2] = origin airport, parts[3] = destination airport
+                if (parts.length >= 4) {
+                    if (i === 0) airportCodes.push(parts[2]); // add origin only once
+                    airportCodes.push(parts[3]);               // always add destination
+                }
+            });
 
-                return `
-            <span class="airport-code">${from}</span>
-            <span class="route-arrow">→</span>
-            <span class="airport-code">${transit}</span>
-            <span class="route-arrow">→</span>
-            <span class="airport-code">${to}</span>
-        `;
-            }
+            if (airportCodes.length < 2) return "";
+
+            // Build HTML: AMD → DEL → BOM
+            return airportCodes
+                .map((code, i) =>
+                    i < airportCodes.length - 1
+                        ? `<span class="airport-code">${code}</span><span class="route-arrow">→</span>`
+                        : `<span class="airport-code">${code}</span>`
+                )
+                .join('');
         }
 
         // Helper function to calculate duration from HH:MM strings
@@ -2091,7 +2094,7 @@ ${paxLines}
 Note: Fares quoted as of ${formatted}. Please confirm availability.`;
 
             // WhatsApp business number (primary contact)
-            const waNumber = '917984237914';
+            const waNumber = '917878392006';
             const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
 
             closeBookingPopup();
@@ -2124,8 +2127,8 @@ Note: Fares quoted as of ${formatted}. Please confirm availability.`;
 
             <!-- Main Content -->
             <div class="relative px-6 py-2 md:py-12 text-center md:text-left">
-                <div class="md:flex items-center justify-between">
-                    <div class="md:w-2/3 mb-6 md:mb-0">
+                <div class="flex flex-col md:flex-row md:items-center justify-between">
+                    <div class="order-2 md:order-1 md:w-2/3 mb-6 md:mb-0">
                         <!-- Moved up with negative margin -->
                         <span
                             class="inline-block px-4 py-1 bg-white bg-opacity-20 text-white text-sm font-semibold rounded-full mb-3 -mt-2">
@@ -2134,7 +2137,7 @@ Note: Fares quoted as of ${formatted}. Please confirm availability.`;
                         <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-3 leading-tight">
                             Domestic Lowest <span class="text-yellow-300">Flight Fare</span>
                         </h1>
-                        <div class="h-1 w-20 bg-yellow-300 rounded-full mb-4 hidden md:block"></div>
+                        <div class="h-1 w-20 bg-yellow-300 rounded-full mb-4 hidden md:block mx-auto md:mx-0"></div>
                         <p class="text-white text-base md:text-lg opacity-90 max-w-xl mb-2">
                             Contact us for special Domestic FD, exclusive coupon codes and international fare inquiries.
                         </p>
@@ -2144,13 +2147,17 @@ Note: Fares quoted as of ${formatted}. Please confirm availability.`;
                             quoted fare; contact us for a single PNR.
                         </p>
                     </div>
+                    
+                    <div class="order-1 md:order-2 md:w-1/3 flex justify-center md:justify-end items-center mb-6 md:mb-0 relative z-10 md:pr-4">
+                        <img src="go_fly_high_logo.jpeg" alt="Go Fly High Logo" class="h-24 md:h-28 rounded-xl shadow-2xl bg-white p-1 transform hover:scale-105 transition duration-300">
+                    </div>
 
                     <!-- Contact Information - Position adjusted for responsiveness -->
-                    <div class="md:absolute bottom-2 right-4 text-center md:text-right mt-4 md:mt-0">
+                    <div class="order-3 md:absolute bottom-2 right-4 text-center md:text-right mt-2 md:mt-0">
                         <div class="flex flex-wrap justify-center md:flex-col md:items-end md:space-y-1">
                             <div class="flex items-center text-white text-xs mx-2 md:mx-0">
                                 <i class="fas fa-phone-alt mr-1"></i>
-                                <span>+91 7878392006</span>
+                                <span>+91 7984237914</span>
                             </div>
                             <div class="flex items-center text-white text-xs mx-2 md:mx-0">
                                 <i class="fas fa-envelope mr-1"></i>
@@ -2419,8 +2426,8 @@ Note: Fares quoted as of ${formatted}. Please confirm availability.`;
 
     <script>
 
-        // let serverName = "http://localhost:8081";
-        let serverName = "https://api.goflyhigh.in";
+        let serverName = "http://localhost:8081";
+        // let serverName = "https://api.goflyhigh.in";
 
         // let serverName = "https://bhumiholiday-production.up.railway.app";
 

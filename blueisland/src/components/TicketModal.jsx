@@ -81,7 +81,7 @@ export default function TicketModal({ flight, lastSearch, userEmail, userName, o
   })
 
   const validate = () => {
-    if (!pnr.trim()) { toast.error('PNR number is required'); return false }
+    if (!pnr.trim()) { toast.error('PNR number is required.'); return false }
     if (!email.trim()) { toast.error('Please enter recipient email'); return false }
     const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRe.test(email.trim())) { toast.error('Please enter a valid email address'); return false }

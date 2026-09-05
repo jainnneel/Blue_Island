@@ -1,1 +1,7 @@
+# Standalone static tools — must be served as real files, NOT swallowed by the
+# SPA catch-all below. These rules must stay ABOVE the /* rule.
+/quote-modern.html      /quote-modern.html      200
+/ctcleartrip-sg.html    /ctcleartrip-sg.html    200
+
+# SPA fallback — every other unmatched route renders the React app
 /* /index.html 200

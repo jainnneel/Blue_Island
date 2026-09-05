@@ -1,7 +1,4 @@
-# Standalone static tools — must be served as real files, NOT swallowed by the
-# SPA catch-all below. These rules must stay ABOVE the /* rule.
-/quote-modern.html      /quote-modern.html      200
-/ctcleartrip-sg.html    /ctcleartrip-sg.html    200
-
-# SPA fallback — every other unmatched route renders the React app
+# SPA fallback — every unmatched route renders the React app.
+# NOTE: this file is Netlify/Cloudflare-only; Vercel ignores it as config and
+# serves it as a public static asset. Never put private paths in here.
 /* /index.html 200

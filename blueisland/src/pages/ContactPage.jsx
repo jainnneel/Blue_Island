@@ -22,26 +22,12 @@ const BANKS = [
     bg:      'bg-orange-50 dark:bg-orange-900/20',
     border:  'border-orange-200 dark:border-orange-800',
     badge:   'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300',
-    name:    'BHUMI HOLIDAYS',
+    name:    'GOFLYHIGH',
     type:    'CURRENT',
-    account: '654805600649',
-    ifsc:    'ICIC0006548',
-    branch:  'Ahmedabad Railway Pura',
-    upi:     'BHUMIHOLIDAYS@ICICI',
-  },
-  {
-    bank:    'INDUSLND BANK',
-    logo:    null,
-    color:   'from-blue-600 to-indigo-700',
-    bg:      'bg-blue-50 dark:bg-blue-900/20',
-    border:  'border-blue-200 dark:border-blue-800',
-    badge:   'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
-    name:    'BHUMI HOLIDAYS',
-    type:    'CURRENT',
-    account: '258980345600',
-    ifsc:    'INDB0001031',
-    branch:  'Kalupur, Ahmedabad',
-    upi:     null,
+    account: '136805002373',
+    ifsc:    'ICIC0001368',
+    branch:  null,
+    upi:     'goflyhigh@ybl',
   },
 ]
 
@@ -106,7 +92,7 @@ function BankCard({ bank }) {
         <CopyField label="Account Holder"  value={bank.name}    />
         <CopyField label="Account Number"  value={bank.account} />
         <CopyField label="IFSC Code"       value={bank.ifsc}    />
-        <CopyField label="Branch"          value={bank.branch}  />
+        {bank.branch && <CopyField label="Branch" value={bank.branch} />}
         {bank.upi && <CopyField label="UPI ID" value={bank.upi} />}
       </div>
 
@@ -463,7 +449,9 @@ export default function ContactPage({ darkMode, setDarkMode }) {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className={`grid grid-cols-1 gap-6 mx-auto ${
+            BANKS.length > 1 ? 'md:grid-cols-2 max-w-4xl' : 'max-w-md'
+          }`}>
             {BANKS.map((b) => <BankCard key={b.bank} bank={b} />)}
           </div>
 

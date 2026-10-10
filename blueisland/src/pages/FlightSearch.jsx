@@ -33,7 +33,7 @@ function BookingModal({ flight, couponCode, user, onClose }) {
   }
 
   const buildLabel = (idx) => {
-    if (idx < adults)            return `Adult ${idx + 1}`
+    if (idx < adults)            return `Passenger ${idx + 1}`
     if (idx < adults + children) return `Child ${idx - adults + 1}`
     return `Infant ${idx - adults - children + 1}`
   }

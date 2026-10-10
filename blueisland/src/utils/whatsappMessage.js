@@ -76,9 +76,6 @@ CONTACT & BILLING DETAILS
 Name/Company: ${company || 'N/A'}
 Email: ${email}
 Mobile: ${mobile}
-Address: ${address || 'N/A'}
-PAN Card: ${pan || 'N/A'}
-GST Number: ${gst || 'N/A'}
 
 PASSENGER DETAILS (${adults} Adult, ${children} Child, ${infants} Infant)
 --------------------------------------

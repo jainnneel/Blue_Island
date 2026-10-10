@@ -23,13 +23,6 @@ const fadeIn = (delay = 0) => ({
 })
 
 // ─── Static data ──────────────────────────────────────────────────────────────
-const STATS = [
-  { value: '50K+',  label: 'Searches done',   icon: 'fa-search'  },
-  { value: '7',     label: 'Airlines covered', icon: 'fa-plane'   },
-  { value: '5%',    label: 'Flat savings',     icon: 'fa-tag'     },
-  { value: '< 30s', label: 'To sign up',       icon: 'fa-bolt'    },
-]
-
 const FEATURES = [
   {
     icon:  'fa-tag',
@@ -282,26 +275,6 @@ export default function LandingPage({ darkMode, setDarkMode }) {
           <svg viewBox="0 0 1440 72" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full hidden dark:block" preserveAspectRatio="none">
             <path d="M0 72H1440V36C1200 72 960 0 720 36C480 72 240 0 0 36V72Z" fill="#030712"/>
           </svg>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════════════════════
-          STATS BAR
-      ═══════════════════════════════════════════════════════════════════════ */}
-      <section className="py-10 bg-white dark:bg-gray-950 border-b border-gray-100 dark:border-gray-800/50">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {STATS.map((s, i) => (
-              <motion.div key={i} {...fadeIn(i * 0.07)}
-                className="text-center">
-                <div className="inline-flex items-center justify-center w-10 h-10 bg-brand-50 dark:bg-brand-900/20 rounded-xl mb-2.5">
-                  <i className={`fas ${s.icon} text-brand-600 dark:text-brand-400 text-sm`} />
-                </div>
-                <p className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">{s.value}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mt-0.5">{s.label}</p>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 

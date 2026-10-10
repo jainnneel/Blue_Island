@@ -28,3 +28,9 @@ export const WA_MSG_INTERNATIONAL = 'Hi GoFlyHigh, I want to inquire about *inte
 
 /** Default general inquiry */
 export const WA_MSG_GENERAL = 'Hi GoFlyHigh, I have a query regarding my travel.'
+
+/** Group / bulk booking inquiry */
+export const WA_MSG_GROUP = 'Hi GoFlyHigh, I want a quote for a *group booking*. Please share the details.'
+
+/** Coupon / offer inquiry */
+export const WA_MSG_COUPON = 'Hi GoFlyHigh, I would like to know about your *exclusive coupons and offers*.'

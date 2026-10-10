@@ -39,8 +39,11 @@ function BookingModal({ flight, couponCode, user, onClose }) {
   }
 
   const validate = () => {
-    if (!email.trim() || !mobile.trim()) { setError('Please fill email and mobile'); return false }
-    if (mobile.replace(/\D/g, '').length < 10) { setError('Enter a valid 10-digit mobile number'); return false }
+    // Email and mobile are optional: the enquiry is sent over WhatsApp, which already
+    // carries the sender's number. Still check the format when one is supplied.
+    if (mobile.trim() && mobile.replace(/\D/g, '').length < 10) {
+      setError('Enter a valid 10-digit mobile number'); return false
+    }
     for (let i = 0; i < total; i++) {
       if (!passengers[i]?.first.trim() || !passengers[i]?.last.trim()) {
         setError('Please fill all passenger names'); return false
@@ -144,13 +147,13 @@ function BookingModal({ flight, couponCode, user, onClose }) {
             </p>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Email</label>
+                <label className="block text-xs text-gray-400 mb-1">Email <span className="text-gray-300 dark:text-gray-500">(optional)</span></label>
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@email.com"
                   className="input-premium text-sm py-2 dark:bg-gray-600 dark:border-gray-500 dark:text-white" />
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1">Mobile</label>
+                <label className="block text-xs text-gray-400 mb-1">Mobile <span className="text-gray-300 dark:text-gray-500">(optional)</span></label>
                 <input type="tel" value={mobile} onChange={(e) => setMobile(e.target.value)}
                   placeholder="+91 79842 37914"
                   className="input-premium text-sm py-2 dark:bg-gray-600 dark:border-gray-500 dark:text-white" />

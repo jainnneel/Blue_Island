@@ -364,28 +364,6 @@ export default function ContactPage({ darkMode, setDarkMode }) {
 
           {/* Sidebar */}
           <motion.div {...fadeUp(0.2)} className="lg:col-span-2 flex flex-col gap-5">
-            {/* Hours */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
-              <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2 text-sm">
-                <span className="w-7 h-7 rounded-lg bg-brand-100 dark:bg-brand-900/40 flex items-center justify-center">
-                  <i className="fas fa-clock text-brand-600 dark:text-brand-400 text-xs" />
-                </span>
-                Business Hours
-              </h3>
-              <div className="space-y-2.5 text-sm">
-                {[['Monday – Friday','9:00 AM – 8:00 PM'],['Saturday','9:00 AM – 6:00 PM'],['Sunday','10:00 AM – 4:00 PM']].map(([d,h]) => (
-                  <div key={d} className="flex justify-between">
-                    <span className="text-gray-500 dark:text-gray-400">{d}</span>
-                    <span className="font-semibold text-gray-800 dark:text-white">{h}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-4 flex items-center gap-2 bg-green-50 dark:bg-green-900/20 rounded-xl px-3 py-2">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse flex-shrink-0" />
-                <span className="text-xs text-green-700 dark:text-green-400 font-medium">Typically reply within minutes on WhatsApp</span>
-              </div>
-            </div>
-
             {/* Contact quick links */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
               <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2 text-sm">

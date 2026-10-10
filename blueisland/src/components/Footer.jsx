@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom'
 import BrandLogo from './Logo'
-import { BRAND, waLink, WA_MSG_GENERAL } from '../utils/constants'
+import {
+  BRAND, waLink,
+  WA_MSG_GENERAL, WA_MSG_DOMESTIC, WA_MSG_INTERNATIONAL, WA_MSG_GROUP, WA_MSG_COUPON,
+} from '../utils/constants'
 
 export default function Footer() {
   return (
@@ -41,16 +44,34 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Services</h4>
             <ul className="space-y-2 text-sm">
-              <li className="text-gray-400">Domestic Flights</li>
               <li>
-                <a href={waLink('Hi, I want to inquire about international flights')}
+                <a href={waLink(WA_MSG_DOMESTIC)}
+                   target="_blank" rel="noopener noreferrer"
+                   className="hover:text-white transition-colors flex items-center gap-1.5">
+                  Domestic Flights <span className="text-[10px] text-brand-400 font-bold">(WhatsApp)</span>
+                </a>
+              </li>
+              <li>
+                <a href={waLink(WA_MSG_INTERNATIONAL)}
                    target="_blank" rel="noopener noreferrer"
                    className="hover:text-white transition-colors flex items-center gap-1.5">
                   International Flights <span className="text-[10px] text-brand-400 font-bold">(WhatsApp)</span>
                 </a>
               </li>
-              <li className="text-gray-400">Group Bookings</li>
-              <li className="text-gray-400">Exclusive Coupons</li>
+              <li>
+                <a href={waLink(WA_MSG_GROUP)}
+                   target="_blank" rel="noopener noreferrer"
+                   className="hover:text-white transition-colors flex items-center gap-1.5">
+                  Group Bookings <span className="text-[10px] text-brand-400 font-bold">(WhatsApp)</span>
+                </a>
+              </li>
+              <li>
+                <a href={waLink(WA_MSG_COUPON)}
+                   target="_blank" rel="noopener noreferrer"
+                   className="hover:text-white transition-colors flex items-center gap-1.5">
+                  Exclusive Coupons <span className="text-[10px] text-brand-400 font-bold">(WhatsApp)</span>
+                </a>
+              </li>
               <li>
                 <Link to="/contact#bank-details" className="hover:text-white transition-colors">Bank Details</Link>
               </li>

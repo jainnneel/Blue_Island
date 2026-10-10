@@ -73,9 +73,9 @@ Coupon Code: ${couponDisplay}
 
 CONTACT & BILLING DETAILS
 --------------------------------------
-Name/Company: ${company || 'N/A'}
-Email: ${email}
-Mobile: ${mobile}
+Name/Company: ${company || 'N/A'}${email && email.trim() ? `
+Email: ${email}` : ''}${mobile && mobile.trim() ? `
+Mobile: ${mobile}` : ''}
 
 PASSENGER DETAILS (${adults} Adult, ${children} Child, ${infants} Infant)
 --------------------------------------
